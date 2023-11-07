@@ -7,3 +7,10 @@ peg::parser! {
         = "[" l:(number() ** ",") "]" { l }
     }
   }
+
+
+use pest_derive::Parser;
+
+#[derive(Parser)]
+#[grammar = "./grammar.pest"]
+pub struct Grammar;
