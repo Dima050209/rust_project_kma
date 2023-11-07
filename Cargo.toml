@@ -3,7 +3,7 @@ name = "my_parser_kma_group_3_Kharchenko"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-description = "Parser for KMA Rust project"
+description = "Parser for KMA Rust project. This is a HTML parser."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
