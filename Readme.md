@@ -21,9 +21,9 @@ Standart html page contains tags html, head and body. As for now, it's planned t
 Grammar structure: <br />
 opening_tag = `<`, tag_name, attribute, `>`; <br />
 closing_tag = `</`, tag_name, `>`; <br />
+tag_name = some text, that can't start with digit and can contain letters, digits and `_`;
 attribute = attribute_name, `="`, attribute_value, `"`; <br />
-attribute_name = some text. Can't contain special characters.
-In this parser I'll simplify this rule, so that attribute_name starts with letter or `_` and another part can consist of ASCII_ALPHA, `_` and `-`; <br />
+attribute_name = some text, that can't start with digit and can contain letters, digits, `_` and `-`; <br />
 attributer_value = some text, that doesn't contain `'` or `"`; <br />
 text = some text, that can't contain `<`; <br />
 content = tag or text; _<br />_
