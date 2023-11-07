@@ -28,4 +28,16 @@ attributer_value = some text, that doesn't contain `'` or `"`; <br />
 text = some text, that can't contain '<'; <br />
 content = tag or text; _<br />_
 tag = opening_tag, content, closing_tag; <br />
-document = for now it is planned as a list of tags. Later this might be something like '<html><head>...</head><body>...</body></html>'. 
+document = for now it is planned as a list of tags. Later this might be something like
+<pre>
+<code>
+&lt;html&gt;
+    &lt;head&gt;
+        content
+    &lt;/head&gt;
+    &lt;body&gt;
+        content
+    &lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre> 
