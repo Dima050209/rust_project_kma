@@ -11,15 +11,7 @@ fn text_test() -> anyhow::Result<()> {
     assert_eq!(pair.as_span().start(), 0);
     assert_eq!(pair.as_span().end(), 9);
 
-    // let pair = Grammar::parse(Rule::text, "")?
-    //     .next()
-    //     .ok_or_else(|| anyhow!("no pair"))?;
-    // assert_eq!(pair.as_str(), "");
-    // assert_eq!(pair.as_span().start(), 0);
-    // assert_eq!(pair.as_span().end(), 0);
-
     let pair = Grammar::parse(Rule::text, "<some text");
-    // println!("text {}", pair?.as_str());
     assert!(pair.is_err());
 
     Ok(())
@@ -206,4 +198,3 @@ fn tag_test() -> anyhow::Result<()> {
 
     Ok(())
 }
-
