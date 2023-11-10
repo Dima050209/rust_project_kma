@@ -23,5 +23,5 @@ tag = {
     opening_tag ~ (" ")* ~ (tag | text)* ~ (" ")* ~ closing_tag
 }
 document = {
-    SOI ~ (tag)* ~ EOI
+    SOI ~ (tag | text)* ~ EOI
 }

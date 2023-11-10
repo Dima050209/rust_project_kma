@@ -198,3 +198,14 @@ fn tag_test() -> anyhow::Result<()> {
 
     Ok(())
 }
+#[test]
+fn document_test() -> anyhow::Result<()> {
+    let doc = std::fs::read_to_string("tests/document_test.html").expect("could not read file");
+
+    let pair = Grammar::parse(Rule::document, &doc)?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(pair.as_str(), "\n<html lang=\"en\">\n<head>\n   \n    <title>Document</title>\n</head>\n<body>\n    \n</body>\n</html> ");
+
+    Ok(())
+}
