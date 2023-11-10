@@ -103,6 +103,11 @@ fn attribute_test() -> anyhow::Result<()> {
         .ok_or_else(|| anyhow!("no pair"))?;
     assert_eq!(pair.as_str(), "_1 =   \"\"");
 
+    let pair = Grammar::parse(Rule::attribute, "a=\"b c d\"")?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(pair.as_str(), "a=\"b c d\"");
+
     let pair = Grammar::parse(Rule::attribute, "_=");
     assert!(pair.is_err());
 
@@ -118,15 +123,20 @@ fn opening_tag_test() -> anyhow::Result<()> {
     assert_eq!(pair.as_span().end(), 6);
 
     let pair = Grammar::parse(Rule::opening_tag, "<style link=\"anylink.com\" >")?
-    .next()
-    .ok_or_else(|| anyhow!("no pair"))?;
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;
     assert_eq!(pair.as_str(), "<style link=\"anylink.com\" >");
 
-    let pair = Grammar::parse(Rule::opening_tag, "<style link=\"anylink.com\" _a2=\"secondattr\"   >")?
+    let pair = Grammar::parse(
+        Rule::opening_tag,
+        "<style link=\"anylink.com\" _a2=\"secondattr\"   >",
+    )?
     .next()
     .ok_or_else(|| anyhow!("no pair"))?;
-    assert_eq!(pair.as_str(), "<style link=\"anylink.com\" _a2=\"secondattr\"   >");
- 
+    assert_eq!(
+        pair.as_str(),
+        "<style link=\"anylink.com\" _a2=\"secondattr\"   >"
+    );
 
     let pair = Grammar::parse(Rule::opening_tag, "<<a>");
     assert!(pair.is_err());
@@ -145,9 +155,55 @@ fn closing_tag_test() -> anyhow::Result<()> {
     let pair = Grammar::parse(Rule::closing_tag, "</   style  >");
     assert!(pair.is_err());
 
-    
     let pair = Grammar::parse(Rule::closing_tag, "<</a>");
     assert!(pair.is_err());
 
     Ok(())
 }
+#[test]
+fn tag_test() -> anyhow::Result<()> {
+    let pair = Grammar::parse(Rule::tag, "<html></html>")?
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(pair.as_str(), "<html></html>");
+    assert_eq!(pair.as_span().start(), 0);
+    assert_eq!(pair.as_span().end(), 13);
+
+    let pair = Grammar::parse(
+        Rule::tag,
+        "<a link=\"anylink.com\" _a2=\"secondattr\">some text</a>",
+    )?
+    .next()
+    .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(
+        pair.as_str(),
+        "<a link=\"anylink.com\" _a2=\"secondattr\">some text</a>"
+    );
+
+    let pair = Grammar::parse(
+        Rule::tag,
+        "<a link=\"anylink.com\" _a2=\"secondattr\">
+    <div class = \"123\">
+        text
+    </div>
+    another paragraph
+</a>",
+    )?
+    .next()
+    .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(
+        pair.as_str(),
+        "<a link=\"anylink.com\" _a2=\"secondattr\">
+    <div class = \"123\">
+        text
+    </div>
+    another paragraph
+</a>"
+    );
+
+    let pair = Grammar::parse(Rule::tag, "<a><</a>");
+    assert!(pair.is_err());
+
+    Ok(())
+}
+

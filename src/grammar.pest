@@ -11,11 +11,17 @@ attribute_value = {
     (!("\"" | "\'") ~ (ANY))+
 }
 attribute = {
-    attribute_name  ~ (" ")* ~ "=" ~ (" ")* ~ "\"" ~ (attribute_value | "") ~ "\""
+    attribute_name  ~ (" ")* ~ "=" ~ (" ")* ~ "\"" ~ (attribute_value ~ (" ")*)* ~ "\""
 }
 opening_tag = {
     "<" ~ tag_name ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">"
 }
 closing_tag = {
     "</" ~ tag_name ~ (" ")* ~ ">"
+}
+tag = {
+    opening_tag ~ (" ")* ~ (tag | text)* ~ (" ")* ~ closing_tag
+}
+document = {
+    SOI ~ (tag)* ~ EOI
 }

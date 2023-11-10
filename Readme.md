@@ -22,11 +22,10 @@ Grammar structure: <br />
 opening_tag = `<`, tag_name, attribute, `>`; <br />
 closing_tag = `</`, tag_name, `>`; <br />
 tag_name = some text, that can't start with digit and can contain letters, digits and `_`; <br />
-attribute = attribute_name, `="`, attribute_value, `"`; <br />
+attribute = attribute_name, `="`, attribute_values, `"`; <br />
 attribute_name = some text, that can't start with digit and can contain letters, digits, `_` and `-`; <br />
 attributer_value = some text, that doesn't contain `'` or `"`; <br />
 text = some text, that can't contain `<`; <br />
-content = tag or text; _<br />_
 tag = opening_tag, content, closing_tag; <br />
 document = for now it is planned as a list of tags. Later this might be something like
 <pre>
