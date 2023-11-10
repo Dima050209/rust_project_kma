@@ -21,7 +21,7 @@ Standart html page contains tags html, head and body. As for now, it's planned t
 Grammar structure: <br />
 opening_tag = `<`, tag_name, attribute, `>`; <br />
 closing_tag = `</`, tag_name, `>`; <br />
-tag_name = some text, that can't start with digit and can contain letters, digits and `_`;
+tag_name = some text, that can't start with digit and can contain letters, digits and `_`; <br />
 attribute = attribute_name, `="`, attribute_value, `"`; <br />
 attribute_name = some text, that can't start with digit and can contain letters, digits, `_` and `-`; <br />
 attributer_value = some text, that doesn't contain `'` or `"`; <br />
