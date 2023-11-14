@@ -13,15 +13,16 @@ attribute_value = {
 attribute = {
     attribute_name  ~ (" ")* ~ "=" ~ (" ")* ~ "\"" ~ (attribute_value ~ (" ")*)* ~ "\""
 }
-opening_tag = {
-    "<" ~ tag_name ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">"
-}
-closing_tag = {
-    "</" ~ tag_name ~ (" ")* ~ ">"
-}
 tag = {
-    opening_tag ~ (" ")* ~ (tag | text)* ~ (" ")* ~ closing_tag
+    "<" ~ tag_name ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">"
+    ~ (" ")* ~ (tag | text)* ~ (" ")* 
+    ~  "</" ~ tag_name ~ (" ")* ~ ">"
 }
+// html_tag = {
+//     "<html" ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">"
+//     ~ (" ")* ~ (tag | text)* ~ (" ")* 
+//     ~  "</" ~ tag_name ~ (" ")* ~ ">"
+// }
 document = {
-    SOI ~ (tag | text)* ~ EOI
+    SOI ~ "<!DOCTYPE html>" ~ (tag | text)* ~ EOI
 }

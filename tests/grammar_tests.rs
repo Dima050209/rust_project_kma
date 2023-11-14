@@ -106,53 +106,6 @@ fn attribute_test() -> anyhow::Result<()> {
     Ok(())
 }
 #[test]
-fn opening_tag_test() -> anyhow::Result<()> {
-    let pair = Grammar::parse(Rule::opening_tag, "<html>")?
-        .next()
-        .ok_or_else(|| anyhow!("no pair"))?;
-    assert_eq!(pair.as_str(), "<html>");
-    assert_eq!(pair.as_span().start(), 0);
-    assert_eq!(pair.as_span().end(), 6);
-
-    let pair = Grammar::parse(Rule::opening_tag, "<style link=\"anylink.com\" >")?
-        .next()
-        .ok_or_else(|| anyhow!("no pair"))?;
-    assert_eq!(pair.as_str(), "<style link=\"anylink.com\" >");
-
-    let pair = Grammar::parse(
-        Rule::opening_tag,
-        "<style link=\"anylink.com\" _a2=\"secondattr\"   >",
-    )?
-    .next()
-    .ok_or_else(|| anyhow!("no pair"))?;
-    assert_eq!(
-        pair.as_str(),
-        "<style link=\"anylink.com\" _a2=\"secondattr\"   >"
-    );
-
-    let pair = Grammar::parse(Rule::opening_tag, "<<a>");
-    assert!(pair.is_err());
-
-    Ok(())
-}
-#[test]
-fn closing_tag_test() -> anyhow::Result<()> {
-    let pair = Grammar::parse(Rule::closing_tag, "</html>")?
-        .next()
-        .ok_or_else(|| anyhow!("no pair"))?;
-    assert_eq!(pair.as_str(), "</html>");
-    assert_eq!(pair.as_span().start(), 0);
-    assert_eq!(pair.as_span().end(), 7);
-
-    let pair = Grammar::parse(Rule::closing_tag, "</   style  >");
-    assert!(pair.is_err());
-
-    let pair = Grammar::parse(Rule::closing_tag, "<</a>");
-    assert!(pair.is_err());
-
-    Ok(())
-}
-#[test]
 fn tag_test() -> anyhow::Result<()> {
     let pair = Grammar::parse(Rule::tag, "<html></html>")?
         .next()
