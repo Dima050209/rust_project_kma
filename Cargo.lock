@@ -193,6 +193,7 @@ dependencies = [
  "peg",
  "pest",
  "pest_derive",
+ "thiserror",
 ]
 
 [[package]]

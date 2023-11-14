@@ -24,5 +24,5 @@ tag = {
 //     ~  "</" ~ tag_name ~ (" ")* ~ ">"
 // }
 document = {
-    SOI ~ "<!DOCTYPE html>" ~ (tag | text)* ~ EOI
+    SOI ~ "<!DOCTYPE html>" ~ ("\n" | " ")* ~ (tag | text)* ~ EOI
 }

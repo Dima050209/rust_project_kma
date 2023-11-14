@@ -18,16 +18,7 @@ pub fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
     let content = std::fs::read_to_string(&args.path).expect("could not read file");
 
-    let pair = Grammar::parse(Rule::document, &content)?
-        .next()
-        .ok_or_else(|| anyhow!("no pair"))?;
-    println!("{}", pair);
-
-    // for line in content.lines() {
-    //     if line.contains(&args.pattern) {
-    //         println!("{}", line);
-    //     }
-    // }
-
+    let pr = parse_html_file(&content);
+    println!("{:?}", &pr);
     Ok(())
 }
