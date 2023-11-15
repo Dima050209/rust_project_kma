@@ -150,11 +150,11 @@ fn tag_test() -> anyhow::Result<()> {
     assert!(pair.is_err());
 
     let pair = Grammar::parse(Rule::tag, "<div class=\"a\"/>")?
-    .next()
-    .ok_or_else(|| anyhow!("no pair"))?;
-assert_eq!(pair.as_str(), "<div class=\"a\"/>");
-assert_eq!(pair.as_span().start(), 0);
-assert_eq!(pair.as_span().end(), 16);
+        .next()
+        .ok_or_else(|| anyhow!("no pair"))?;
+    assert_eq!(pair.as_str(), "<div class=\"a\"/>");
+    assert_eq!(pair.as_span().start(), 0);
+    assert_eq!(pair.as_span().end(), 16);
 
     Ok(())
 }
@@ -165,7 +165,7 @@ fn document_test() -> anyhow::Result<()> {
     let pair = Grammar::parse(Rule::document, &doc)?
         .next()
         .ok_or_else(|| anyhow!("no pair"))?;
-    
+
     assert_eq!(pair.as_str(), "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Complex HTML Example</title>\n</head>\n<body>\n\n    <header>\n        <h1>Welcome to My Website</h1>\n        <nav>\n            <ul>\n                <li><a href=\"#home\">Home</a></li>\n                <li><a href=\"#about\">About</a></li>\n                <li><a href=\"#services\">Services</a></li>\n                <li><a href=\"#contact\">Contact</a></li>\n            </ul>\n        </nav>\n    </header>\n\n    <section id=\"home\">\n        <h2>Home</h2>\n        <p>This is the home section of the website.</p>\n    </section>\n\n    <section id=\"home\">\n        <h2>Home</h2>\n        <p>This is the home section of the website.</p>\n    </section>\n\n    <section id=\"home\">\n        <h2>Home</h2>\n        <p>This is the home section of the website.</p>\n    </section>\n\n    <section id=\"home\">\n        <h2>Home</h2>\n        <p>This is the home section of the website.</p>\n    </section>\n\n    <section id=\"home\">\n        <h2>Home</h2>\n        <p>This is the home section of the website.</p>\n    </section>\n\n    <footer>\n        <p>&copy; 2023 My Website. All rights reserved.</p>\n    </footer>\n\n</body>\n</html>\n");
 
     Ok(())

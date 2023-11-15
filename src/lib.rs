@@ -5,40 +5,38 @@ use pest_derive::Parser;
 #[grammar = "./grammar.pest"]
 pub struct Grammar;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct HTMLDocument {
     content: Option<Tag>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Tag {
     name: String,
     attributes: Vec<Attribute>,
     content: Vec<Content>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Attribute {
     name: String,
     value: Option<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Content {
     ContentTag(Tag),
     ContentText(String),
 }
 impl Default for HTMLDocument {
-  fn default() -> Self {
-      Self::new()
-}
-}
-impl HTMLDocument {
-  pub fn new() -> Self {
-    HTMLDocument {
-        content: None,
+    fn default() -> Self {
+        Self::new()
     }
 }
+impl HTMLDocument {
+    pub fn new() -> Self {
+        HTMLDocument { content: None }
+    }
     pub fn get_content(&self) -> &Option<Tag> {
         &self.content
     }
@@ -89,11 +87,11 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
 
     let mut html_doc = HTMLDocument::new();
     if let Some(inner_pair) = pair.clone().into_inner().next() {
-      if inner_pair.as_rule() != Rule::EOI {
-        let root_tag = parse_tag(pair)?;
-        html_doc.content = Some(root_tag);
-      }
-    } 
+        if inner_pair.as_rule() != Rule::EOI {
+            let root_tag = parse_tag(pair)?;
+            html_doc.content = Some(root_tag);
+        }
+    }
 
     return Ok(html_doc);
 
