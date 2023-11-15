@@ -175,16 +175,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e126420da8274909a0167"
 
 [[package]]
-name = "my_parser_kma_group_1"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37d1611e8ce09c7e0243f6740546e83a1ba1c7178923d499394ee4b27f0c185a"
-dependencies = [
- "peg",
-]
-
-[[package]]
-name = "my_parser_kma_group_3_Kharchenko"
+name = "my_html_parser_kma"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -194,6 +185,15 @@ dependencies = [
  "pest",
  "pest_derive",
  "thiserror",
+]
+
+[[package]]
+name = "my_parser_kma_group_1"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37d1611e8ce09c7e0243f6740546e83a1ba1c7178923d499394ee4b27f0c185a"
+dependencies = [
+ "peg",
 ]
 
 [[package]]

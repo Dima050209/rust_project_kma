@@ -1,5 +1,5 @@
+use pest::error::Error;
 use pest_derive::Parser;
-use pest::error::Error as PestError;
 
 #[derive(Parser)]
 #[grammar = "./grammar.pest"]
@@ -7,7 +7,7 @@ pub struct Grammar;
 
 #[derive(Debug)]
 pub struct HTMLDocument {
-    content: Tag
+    content: Option<Tag>,
 }
 
 #[derive(Debug)]
@@ -28,10 +28,18 @@ pub enum Content {
     ContentTag(Tag),
     ContentText(String),
 }
+impl Default for HTMLDocument {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 impl HTMLDocument {
-  pub fn get_content(&self) -> &Tag {
-    &self.content
-  }
+    pub fn new() -> Self {
+        HTMLDocument { content: None }
+    }
+    pub fn get_content(&self) -> &Option<Tag> {
+        &self.content
+    }
 }
 
 impl Tag {
@@ -70,26 +78,32 @@ impl Attribute {
     }
 }
 
-
 use anyhow::anyhow;
 use pest::Parser;
 pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
     let pair = Grammar::parse(Rule::document, file)?
         .next()
         .ok_or_else(|| anyhow!("no pair"))?;
-      
-    let root_tag = parse_tag(pair)?;
-    let html_doc = HTMLDocument {content:root_tag};
+
+    let mut html_doc = HTMLDocument::new();
+    if let Some(inner_pair) = pair.clone().into_inner().next() {
+        if inner_pair.as_rule() != Rule::EOI {
+            let root_tag = parse_tag(pair)?;
+            html_doc.content = Some(root_tag);
+        }
+    }
+
+    return Ok(html_doc);
 
     use pest::iterators::Pair;
-    fn parse_tag(pair: Pair<Rule>) -> Result<Tag, PestError<Rule>> {
+    fn parse_tag(pair: Pair<Rule>) -> Result<Tag, Box<Error<Rule>>> {
         let mut tag = Tag::new(pair.as_str().to_string());
 
         for inner_pair in pair.into_inner() {
             match inner_pair.as_rule() {
-              Rule::doctype => {
-                tag.name = inner_pair.as_str().to_string();
-              }
+                Rule::doctype => {
+                    tag.name = inner_pair.as_str().to_string();
+                }
                 Rule::tag_name => {
                     tag.name = inner_pair.as_str().to_string();
                 }
@@ -116,8 +130,8 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
                         .push(Content::ContentText(inner_pair.as_str().to_string()));
                 }
                 Rule::html_tag => {
-                  let inner_tag = parse_tag(inner_pair)?;
-                  tag.content.push(Content::ContentTag(inner_tag));
+                    let inner_tag = parse_tag(inner_pair)?;
+                    tag.content.push(Content::ContentTag(inner_tag));
                 }
                 Rule::tag => {
                     let inner_tag = parse_tag(inner_pair)?;
@@ -131,9 +145,7 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
                 }
             }
         }
-  
+
         Ok(tag)
     }
-    
-    Ok(html_doc)
 }
