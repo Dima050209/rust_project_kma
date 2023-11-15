@@ -83,10 +83,6 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
         .next()
         .ok_or_else(|| anyhow!("no pair"))?;
       
-    // for inner_pair in pair.clone().into_inner(). {
-    //   println!("{}", inner_pair);
-    //   println!(" ---------");
-    // }
     let root_tag = parse_tag(pair)?;
     let html_doc = HTMLDocument {content:root_tag};
 
@@ -95,7 +91,11 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
         let mut tag = Tag::new(pair.as_str().to_string());
 
         for inner_pair in pair.into_inner() {
+          println!("{}", inner_pair);
             match inner_pair.as_rule() {
+              Rule::doctype => {
+                tag.name = inner_pair.as_str().to_string();
+              }
                 Rule::tag_name => {
                     tag.name = inner_pair.as_str().to_string();
                 }
@@ -121,11 +121,16 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
                     tag.content
                         .push(Content::ContentText(inner_pair.as_str().to_string()));
                 }
+                Rule::html_tag => {
+                  let inner_tag = parse_tag(inner_pair)?;
+                  tag.content.push(Content::ContentTag(inner_tag));
+                }
                 Rule::tag => {
                     let inner_tag = parse_tag(inner_pair)?;
                     tag.content.push(Content::ContentTag(inner_tag));
                 }
                 Rule::EOI => {
+                 // println!("{:?}", &tag);
                     return Ok(tag);
                 }
                 _ => {
@@ -133,9 +138,9 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
                 }
             }
         }
-       
+  
         Ok(tag)
     }
-    // dbg!(&html_doc);
-    Ok((html_doc))
+    
+    Ok(html_doc)
 }
