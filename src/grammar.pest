@@ -27,5 +27,5 @@ html_tag = {
 }
 doctype = {"<!DOCTYPE html>"}
 document = {
-    SOI ~ doctype ~("\n" | " ")* ~ html_tag ~ EOI
+    (SOI ~ doctype ~("\n" | " ")* ~ html_tag ~ EOI) | (SOI ~ EOI)
 }

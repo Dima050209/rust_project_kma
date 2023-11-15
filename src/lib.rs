@@ -1,19 +1,9 @@
 use pest_derive::Parser;
-use thiserror::Error;
 use pest::error::Error as PestError;
 
 #[derive(Parser)]
 #[grammar = "./grammar.pest"]
 pub struct Grammar;
-
-#[derive(Error, Debug)]
-enum MyError {
-    #[error("Could not read file: {0}")]
-    FileReadError(#[from] std::io::Error),
-
-    #[error("Failed to parse HTML: {0}")]
-    HtmlParseError(#[from] anyhow::Error),
-}
 
 #[derive(Debug)]
 pub struct HTMLDocument {
@@ -37,6 +27,11 @@ pub struct Attribute {
 pub enum Content {
     ContentTag(Tag),
     ContentText(String),
+}
+impl HTMLDocument {
+  pub fn get_content(&self) -> &Tag {
+    &self.content
+  }
 }
 
 impl Tag {
@@ -79,7 +74,7 @@ impl Attribute {
 use anyhow::anyhow;
 use pest::Parser;
 pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
-    let mut pair = Grammar::parse(Rule::document, &file)?
+    let pair = Grammar::parse(Rule::document, file)?
         .next()
         .ok_or_else(|| anyhow!("no pair"))?;
       
@@ -91,7 +86,6 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
         let mut tag = Tag::new(pair.as_str().to_string());
 
         for inner_pair in pair.into_inner() {
-          println!("{}", inner_pair);
             match inner_pair.as_rule() {
               Rule::doctype => {
                 tag.name = inner_pair.as_str().to_string();
@@ -130,7 +124,6 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
                     tag.content.push(Content::ContentTag(inner_tag));
                 }
                 Rule::EOI => {
-                 // println!("{:?}", &tag);
                     return Ok(tag);
                 }
                 _ => {

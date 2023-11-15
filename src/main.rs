@@ -5,6 +5,14 @@ use my_parser_kma_group_3_Kharchenko::*;
 use pest::Parser as PestParser;
 
 use clap::Parser as ClapParser;
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum MyError {
+    #[error("could not read file")]
+    FileReadError(#[from] std::io::Error),
+}
+
 
 #[derive(ClapParser)]
 struct Cli {
@@ -14,9 +22,9 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-pub fn main() -> anyhow::Result<()> {
+pub fn main() -> Result<(), MyError> {
     let args = Cli::parse();
-    let content = std::fs::read_to_string(&args.path).expect("could not read file");
+    let content = std::fs::read_to_string(args.path)?;
 
     let pr = parse_html_file(&content);
     println!("{:?}", &pr);
