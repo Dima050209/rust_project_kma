@@ -29,14 +29,16 @@ pub enum Content {
     ContentText(String),
 }
 impl Default for HTMLDocument {
-    fn default() -> Self {
-        Self::new()
-    }
+  fn default() -> Self {
+      Self::new()
+}
 }
 impl HTMLDocument {
-    pub fn new() -> Self {
-        HTMLDocument { content: None }
+  pub fn new() -> Self {
+    HTMLDocument {
+        content: None,
     }
+}
     pub fn get_content(&self) -> &Option<Tag> {
         &self.content
     }
@@ -87,11 +89,11 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
 
     let mut html_doc = HTMLDocument::new();
     if let Some(inner_pair) = pair.clone().into_inner().next() {
-        if inner_pair.as_rule() != Rule::EOI {
-            let root_tag = parse_tag(pair)?;
-            html_doc.content = Some(root_tag);
-        }
-    }
+      if inner_pair.as_rule() != Rule::EOI {
+        let root_tag = parse_tag(pair)?;
+        html_doc.content = Some(root_tag);
+      }
+    } 
 
     return Ok(html_doc);
 
