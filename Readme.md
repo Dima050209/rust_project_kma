@@ -5,40 +5,20 @@
 The following example will parse a HTML file acording to HTML5 standarts and return an instance of a HTMLDocument structure:
 <pre>
 <code>
-let file_content = std::fs::read_to_string(args.path)?;
+use my_html_parser_kma::*;
+...
+let file_content = std::fs::read_to_string(path_to_file)?;
 let parsed = parse_html_file(&file_content);
 </code>
 </pre>
 
 ### Description 
 
-This is a parser for HTML documents.<br />
+This HTML parser will parse a HTML file according to HTML5 standarts. The parser checks content correctness, such as all tags and text inside of a html tag. Apart from this, it also checks presense of `<!DOCTYPE html>` and `<html>...</html>`.
 
-Structure of an HTML document: <br />
-HTML document consists of tags and text.  <br />
-Tags consist of: opening tag <tag>, closing tag </tag> and some text between them. <br />
-Inside of an opening tag can be some attributes <tag attr1 attr2> <br />
-Standart html page contains tags html, head and body. As for now, it's planned to ignore this and make a parser parse a list of tags. Later the program might be modified to match this requirements. In the final version of the parser this moment will be specified. <br />
+Grammar part was constructed using pest. <br/>
 
-Grammar structure: <br />
-opening_tag = `<`, tag_name, attribute, `>`; <br />
-closing_tag = `</`, tag_name, `>`; <br />
-tag_name = some text, that can't start with digit and can contain letters, digits and `_`; <br />
-attribute = attribute_name, `="`, attribute_values, `"`; <br />
-attribute_name = some text, that can't start with digit and can contain letters, digits, `_` and `-`; <br />
-attributer_value = some text, that doesn't contain `'` or `"`; <br />
-text = some text, that can't contain `<`; <br />
-tag = opening_tag, content, closing_tag; <br />
-document = for now it is planned as a list of tags. Later this might be something like
-<pre>
-<code>
-&lt;html&gt;
-    &lt;head&gt;
-        content
-    &lt;/head&gt;
-    &lt;body&gt;
-        content
-    &lt;/body&gt;
-&lt;/html&gt;
-</code>
-</pre> 
+Grammar contains root element - document. document contains doctype and html tag with some content inside, or it can be empty document( SOI ~ EOI). 
+
+There are several types of tags supported: `<tag></tag>`, `<tag />` or special tag `<meta>`, which comes without `/`. Besides, tag can contain some attributes `<tag attr="attr_value">` and some content, which is basically other tags and some text `<tag><inside_tag /> some text </tag>`. Attribute is described as a simple pair of name and value. Text can't contain `<`. 
+
