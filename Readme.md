@@ -22,3 +22,24 @@ Grammar contains root element - document. document contains doctype and html tag
 
 There are several types of tags supported: `<tag></tag>`, `<tag />` or special tag `<meta>`, which comes without `/`. Besides, tag can contain some attributes `<tag attr="attr_value">` and some content, which is basically other tags and some text `<tag><inside_tag /> some text </tag>`. Attribute is described as a simple pair of name and value. Text can't contain `<`. 
 
+### Usage 
+
+In the main.rs implemented simple CLI. To run the program with test file passed to the parser execute:
+<pre>
+<code>
+cargo run -- tests/test.html
+</code>
+</pre>
+You can pass any file, simply change `tests/test.html` to your direction.
+To view help and credits info execute:
+<pre>
+<code>
+cargo run -- -h
+</code>
+</pre>
+To run tests execute: 
+<pre>
+<code>
+cargo test
+</code>
+</pre>
