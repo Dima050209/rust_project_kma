@@ -24,7 +24,7 @@ There are several types of tags supported: `<tag></tag>`, `<tag />` or special t
 
 The result of parsing is an instanse of a HTMLDocument struct. HTMLDocument contains field `content`, which is an Option<Tag>. Tag is another struct, which represents tag element and consists of  name: String, attributes: Vec<Attribute> and content: Vec<Content>. Attribute struct consists of name: String and value: Option<String>. Finally, Content is an enum and can be ContentTag(Tag) or ContentText(String). All structures have getters. 
 
-parse_html_file() function calls in inner function parse_tag(), which parses content of a file and returnes an instanse of Tag. parse_tag() recieves a pair, creates a new Tag, then matches a rule of the pair and 'fills' the Tag according to the rule. It's quite simple for some text or name rules and attributes. If the rule is tag, then we need to use recursion in order to recieve inner tags.    
+parse_html_file() function calls inner function parse_tag(), which parses content of a file and returnes an instanse of Tag. parse_tag() recieves a pair, creates a new Tag, then matches a rule of the pair and 'fills' the Tag according to the rule. It's quite simple for some text or name rules and attributes. If the rule is tag, then we need to use recursion in order to recieve inner tags. Finally, parse_html_file() uses the generated instatnse of a Tag as a content for HTMLDocument and returns it.
 
 ### Usage 
 
