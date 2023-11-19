@@ -1,12 +1,14 @@
-### My HTML parser
-
-HTML parser for Rust course
-
+### HTML parser for KMA Rust course
 ![Rust Crab](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9jFG4XUD60ap87Arcx6wkBP3GJhYB5ChQyz_1u1onpVI3-4fpshRHDpuV4HE_T5n113E&usqp=CAU)
 
 ### Example
-
-// will be soon
+The following example will parse a HTML file acording to HTML5 standarts and return an instance of a HTMLDocument structure:
+<pre>
+<code>
+let file_content = std::fs::read_to_string(args.path)?;
+let parsed = parse_html_file(&file_content);
+</code>
+</pre>
 
 ### Description 
 

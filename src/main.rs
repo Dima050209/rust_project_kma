@@ -1,6 +1,6 @@
+use clap::Parser;
 use my_html_parser_kma::*;
 
-use clap::Parser as ClapParser;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -9,19 +9,25 @@ pub enum MyError {
     FileReadError(#[from] std::io::Error),
 }
 
-#[derive(ClapParser)]
-struct Cli {
-    /// The pattern to look for
-    pattern: String,
-    /// The path to the file to read
-    path: std::path::PathBuf,
+#[derive(Parser, Default, Debug)]
+#[clap(
+    author = "Dmytro Kharchenko",
+    version,
+    about = "This is a simple HTML parser"
+)]
+struct Arguments {
+    /// Path to file
+    path: Option<String>,
 }
 
-pub fn main() -> Result<(), MyError> {
-    let args = Cli::parse();
-    let content = std::fs::read_to_string(args.path)?;
+fn main() -> Result<(), MyError> {
+    let args = Arguments::parse();
+    if let Some(path) = args.path {
+        let content = std::fs::read_to_string(path)?;
 
-    let pr = parse_html_file(&content);
-    println!("{:?}", &pr);
+        let pr = parse_html_file(&content);
+        println!("{:?}", &pr);
+    }
+
     Ok(())
 }

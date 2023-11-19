@@ -9,7 +9,7 @@ description = "Parser for KMA Rust project. This is a HTML parser."
 
 [dependencies]
 anyhow = "1.0.75"
-clap = { version = "4.4.7", features = ["derive"] }
+clap = { version = "3.1.6", features = ["derive"] }
 my_parser_kma_group_1 = "0.2.0"
 peg = "0.8.2"
 pest = "2.7.5"
