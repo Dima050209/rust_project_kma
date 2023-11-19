@@ -22,6 +22,10 @@ Grammar contains root element - document. document contains doctype and html tag
 
 There are several types of tags supported: `<tag></tag>`, `<tag />` or special tag `<meta>`, which comes without `/`. Besides, tag can contain some attributes `<tag attr="attr_value">` and some content, which is basically other tags and some text `<tag><inside_tag /> some text </tag>`. Attribute is described as a simple pair of name and value. Text can't contain `<`. 
 
+The result of parsing is an instanse of a HTMLDocument struct. HTMLDocument contains field `content`, which is an Option<Tag>. Tag is another struct, which represents tag element and consists of  name: String, attributes: Vec<Attribute> and content: Vec<Content>. Attribute struct consists of name: String and value: Option<String>. Finally, Content is an enum and can be ContentTag(Tag) or ContentText(String). All structures have getters. 
+
+parse_html_file() function calls in inner function parse_tag(), which parses content of a file and returnes an instanse of Tag. parse_tag() recieves a pair, creates a new Tag, then matches a rule of the pair and 'fills' the Tag according to the rule. It's quite simple for some text or name rules and attributes. If the rule is tag, then we need to use recursion in order to recieve inner tags.    
+
 ### Usage 
 
 In the main.rs implemented simple CLI. To run the program with test file passed to the parser execute:
