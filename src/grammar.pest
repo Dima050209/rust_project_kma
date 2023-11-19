@@ -13,8 +13,9 @@ attribute_value = {
 attribute = {
     attribute_name  ~ (" ")* ~ "=" ~ (" ")* ~ "\"" ~ (attribute_value ~ (" ")*)* ~ "\""
 }
+meta_name = {"meta"}
 tag = {
-    ("<meta"  ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">")
+    ("<" ~ meta_name  ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">")
     | ("<" ~ tag_name ~ (" ")* ~ (attribute ~ (" ")*)* ~ "/>")
     | ("<" ~ tag_name ~ (" ")* ~ (attribute ~ (" ")*)* ~ ">"
     ~ (" ")* ~ (tag | text)* ~ (" ")* 

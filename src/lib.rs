@@ -97,15 +97,18 @@ pub fn parse_html_file(file: &str) -> anyhow::Result<HTMLDocument> {
 
     use pest::iterators::Pair;
     fn parse_tag(pair: Pair<Rule>) -> Result<Tag, Box<Error<Rule>>> {
-        let mut tag = Tag::new(pair.as_str().to_string());
+        let mut tag = Tag::new("html".to_string());
 
         for inner_pair in pair.into_inner() {
             match inner_pair.as_rule() {
                 Rule::doctype => {
-                    tag.name = inner_pair.as_str().to_string();
+                    tag.name = "doctype".to_string();
                 }
                 Rule::tag_name => {
                     tag.name = inner_pair.as_str().to_string();
+                }
+                Rule::meta_name => {
+                    tag.name = "meta".to_string();
                 }
                 Rule::attribute => {
                     let mut attr_name = String::new();
